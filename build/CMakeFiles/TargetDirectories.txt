@@ -1,0 +1,3 @@
+/home/ismaildrs/Documents/Projects/compiler/yanki/build/CMakeFiles/YANKI.dir
+/home/ismaildrs/Documents/Projects/compiler/yanki/build/CMakeFiles/edit_cache.dir
+/home/ismaildrs/Documents/Projects/compiler/yanki/build/CMakeFiles/rebuild_cache.dir
