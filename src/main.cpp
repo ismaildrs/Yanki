@@ -17,7 +17,7 @@ int main(int argc, char* argv[]){
   std::vector<std::pair<YANKI::Token, std::string>>  tokens = lexer.tokenize();
 
   for(auto token: tokens){
-    std::cout << token.second << std::endl;
+    std::cout << token.first << ": " << token.second << std::endl;
   }
 
   return 0;

@@ -17,7 +17,8 @@ namespace YANKI
     SHOW, // print to console
     VAR,  // variables
     CST,  // Numbers
-    EXP   // end of expression: ;
+    EXP,  // end of expression: ;
+    EXIT
   };
 
   class Lexer
@@ -44,7 +45,7 @@ namespace YANKI
       {
         return src.at(index++);
       }
-      return {};  // Return empty optional if nothing to consume
+      return {}; // Return empty optional if nothing to consume
     }
 
     std::vector<std::pair<Token, std::string>> tokenize()
@@ -59,7 +60,13 @@ namespace YANKI
           {
             buff.push_back(consume().value());
           }
-          tokens.push_back({Token::VAR, std::string(buff.begin() ,buff.end())}); // Add token for variable
+          std::string gen = std::string(buff.begin(), buff.end());
+          if (gen.compare("show"))
+            tokens.push_back({Token::SHOW, gen}); // Add token for variable
+          else if (gen.compare("exit"))
+            tokens.push_back({Token::EXIT, gen});
+          else
+            tokens.push_back({Token::VAR, gen});
           buff.clear(); // Clear buffer (though it's not strictly necessary)
         }
         else if (isdigit(peek().value()))
@@ -68,7 +75,7 @@ namespace YANKI
           {
             buff.push_back(consume().value());
           }
-          tokens.push_back({Token::CST, std::string(buff.begin() ,buff.end())}); // Add token for constant (number)
+          tokens.push_back({Token::CST, std::string(buff.begin(), buff.end())}); // Add token for constant (number)
           buff.clear();
         }
         else if (peek().value() == ':')

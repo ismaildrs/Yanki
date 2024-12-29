@@ -7,7 +7,6 @@ namespace YANKI
 
   namespace DS
   {
-
     class Node
     {
     private:
@@ -22,7 +21,7 @@ namespace YANKI
       {
         return children[index];
       }
-      
+
     };
   }
 
