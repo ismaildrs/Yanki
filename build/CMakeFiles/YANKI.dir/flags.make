@@ -4,7 +4,7 @@
 # compile CXX with /usr/bin/c++
 CXX_DEFINES = 
 
-CXX_INCLUDES = -I/home/ismaildrs/Documents/Projects/compiler/yanki/include
+CXX_INCLUDES = -I/home/ismaildrs/Documents/Projects/Compiler/Yanki/yanki/include
 
 CXX_FLAGS = 
 

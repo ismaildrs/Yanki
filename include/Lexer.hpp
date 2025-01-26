@@ -2,32 +2,39 @@
 #include <iostream>
 #include <optional>
 #include <vector>
+#include <Constants.hpp>
 
 namespace YANKI
 {
-  enum Token
-  {
-    ASSIGN, // :
-    ADD,
-    SUB,
-    MUL,
-    DIV,
-    OPTH, // "("
-    CPTH, // ")"
-    SHOW, // print to console
-    VAR,  // variables
-    CST,  // Numbers
-    EXP,  // end of expression: ;
-    EXIT
+
+  // TODO: use regular exp to identify elements of the language 
+
+  enum Token {
+    ASSIGN,     // : (or consider renaming to COLON if not assignment)
+    OP,
+    OPEN_PAREN, // (
+    CLOSE_PAREN,// )
+    SHOW,       // print to console
+    VAR,        // variables
+    CST,        // numbers
+    END_EXPR,   // end of expression: ;
+    EXIT        // exit
   };
 
-  class Lexer
+
+  class LexerInterface
+  {
+  public:
+    virtual std::vector<std::pair<Token, std::string>> tokenize() = 0;
+  };
+
+  class Lexer : public LexerInterface
   {
   public:
     Lexer(const std::string &src)
         : src(src), index(0)
     {
-      std::cout << "Lexer: -----------------" << std::endl;
+      if(isDebug()) std::cout << "Lexer Phase: -----------------" << std::endl;
     }
 
     std::optional<char> peek(int head = 1)
@@ -81,43 +88,43 @@ namespace YANKI
         else if (peek().value() == ':')
         {
           consume();
-          tokens.push_back({Token::ASSIGN, ":"}); // Add token for assign operator
+          tokens.push_back({Token::ASSIGN, ":"});
         }
         else if (peek().value() == '+')
         {
           consume();
-          tokens.push_back({Token::ADD, "+"}); // Add token for assign operator
+          tokens.push_back({Token::OP, "+"});
         }
         else if (peek().value() == '-')
         {
           consume();
-          tokens.push_back({Token::SUB, "-"}); // Add token for assign operator
+          tokens.push_back({Token::OP, "-"});
         }
         else if (peek().value() == '*')
         {
           consume();
-          tokens.push_back({Token::MUL, "*"}); // Add token for assign operator
+          tokens.push_back({Token::OP, "*"});
         }
         else if (peek().value() == '/')
         {
           consume();
-          tokens.push_back({Token::DIV, "/"}); // Add token for assign operator
+          tokens.push_back({Token::OP, "/"});
         }
         else if (peek().value() == '(')
         {
           consume();
-          tokens.push_back({Token::OPTH, "("}); // Add token for opening parenthesis
+          tokens.push_back({Token::OPEN_PAREN, "("}); // Add token for opening parenthesis
         }
         else if (peek().value() == ')')
         {
           consume();
-          tokens.push_back({Token::ASSIGN, ")"}); // Add token for closing parenthesis
+          tokens.push_back({Token::CLOSE_PAREN, ")"}); // Add token for closing parenthesis
         }
         else if (peek().value() == ';')
         {
           consume();
 
-          tokens.push_back({Token::EXP, ";"}); // Add token for expression end
+          tokens.push_back({Token::END_EXPR, ";"}); // Add token for expression end
         }
         else if (peek().value() == ' ' || peek().value() == '\n')
         {
@@ -138,5 +145,4 @@ namespace YANKI
     std::vector<std::pair<Token, std::string>> tokens;
     int index;
   };
-
 }

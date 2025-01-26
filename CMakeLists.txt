@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.28)
 
-project(YANKI)
+project(yanki)
 
 # Define the source files for the executable
 add_executable(YANKI src/main.cpp)
