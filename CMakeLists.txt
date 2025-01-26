@@ -6,7 +6,7 @@ project(yanki)
 add_executable(YANKI src/main.cpp)
 
 # Define additional files (this is more typical for documentation or data files)
-set(FILES docs/start.yy)
+# set(FILES docs/start.yy)
 
 # Include directories
 target_include_directories(YANKI PUBLIC include)
