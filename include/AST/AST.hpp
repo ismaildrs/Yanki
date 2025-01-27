@@ -93,6 +93,11 @@ namespace YANKI
     Visitable* factor;
 
   public:
+
+    Variable(std::string name): varname(name){
+  
+    }
+
     void accept(Visitor* v) override
     {
       v->visitVariable(this);
@@ -118,6 +123,7 @@ namespace YANKI
       factor = fac;
     }
   };
+
 
   class Operation : public Visitable
   {

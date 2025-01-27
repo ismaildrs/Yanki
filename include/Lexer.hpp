@@ -15,7 +15,7 @@ namespace YANKI
     OPEN_PAREN, // (
     CLOSE_PAREN,// )
     SHOW,       // print to console
-    VAR,        // variables
+    IDENTIFIER,        // variables
     CST,        // numbers
     END_EXPR,   // end of expression: ;
     EXIT        // exit
@@ -73,7 +73,7 @@ namespace YANKI
           else if (gen.compare("exit"))
             tokens.push_back({Token::EXIT, gen});
           else
-            tokens.push_back({Token::VAR, gen});
+            tokens.push_back({Token::IDENTIFIER, gen});
           buff.clear(); // Clear buffer (though it's not strictly necessary)
         }
         else if (isdigit(peek().value()))

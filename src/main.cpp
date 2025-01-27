@@ -1,5 +1,5 @@
-#include "Parser.hpp"
-#include "AST.hpp"
+#include "parser/Parser.hpp"
+#include "AST/AST.hpp"
 #include <Constants.hpp>
 #include <iostream>
 #include <fstream>

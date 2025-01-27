@@ -1,7 +1,8 @@
 #pragma once
 #include <iostream>
 #include <stdexcept>
-#include <VisitorInterfaces.hpp>
+#include "Visitor/Visitable.hpp"
+
 
 namespace YANKI
 {
@@ -42,11 +43,11 @@ namespace YANKI
       currentType = STRING;
     }
 
-    void visitVariable(Variable *variable) override
+    void visitIdentifier(Identifier *variable) override
     {
-      if (variable->getFactor() != nullptr)
+      if (variable->getExpression() != nullptr)
       {
-        variable->getFactor()->accept(this); // Visit the factor within the variable
+        variable->getExpression()->accept(this); // Visit the factor within the variable
       }
     }
 

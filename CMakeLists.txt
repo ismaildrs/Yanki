@@ -1,12 +1,22 @@
-cmake_minimum_required(VERSION 3.28)
+cmake_minimum_required(VERSION 3.10)
 
-project(yanki)
+# Project name and version
+project(yanki VERSION 1.0)
 
-# Define the source files for the executable
-add_executable(YANKI src/main.cpp)
+# Set the C++ standard
+set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD_REQUIRED True)
 
-# Define additional files (this is more typical for documentation or data files)
-# set(FILES docs/start.yy)
+# Include directories for headers
+include_directories(
+    ${PROJECT_SOURCE_DIR}/include
+)
 
-# Include directories
-target_include_directories(YANKI PUBLIC include)
+# Find all source files in the src directory
+file(GLOB_RECURSE SOURCES
+    ${PROJECT_SOURCE_DIR}/src/*.cpp
+    ${PROJECT_SOURCE_DIR}/src/*.c
+)
+
+# Create the main executable from the source files
+add_executable(${PROJECT_NAME} ${SOURCES})
