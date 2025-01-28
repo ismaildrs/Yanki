@@ -7,10 +7,22 @@ project(yanki VERSION 1.0)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED True)
 
+find_package(LLVM REQUIRED CONFIG)
+
+# Set LLVM include directories and libraries
+message(STATUS "Found LLVM ${LLVM_PACKAGE_VERSION}")
+message(STATUS "Using LLVMConfig.cmake in: ${LLVM_DIR}")
+
 # Include directories for headers
 include_directories(
     ${PROJECT_SOURCE_DIR}/include
+    ${LLVM_INCLUDE_DIRS}
 )
+
+add_definitions(${LLVM_DEFINITIONS})
+
+# Properly map LLVM components to libnames
+llvm_map_components_to_libnames(llvm_libs support core irreader)
 
 # Find all source files in the src directory
 file(GLOB_RECURSE SOURCES
@@ -20,3 +32,6 @@ file(GLOB_RECURSE SOURCES
 
 # Create the main executable from the source files
 add_executable(${PROJECT_NAME} ${SOURCES})
+
+# Explicitly link required LLVM components
+target_link_libraries(${PROJECT_NAME} PRIVATE ${llvm_libs})
