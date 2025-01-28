@@ -5,6 +5,7 @@
 #include <fstream>
 #include <sstream>
 #include<Lexer.hpp>
+#include "visitor/PrintVisitor.hpp"
 
 int main(int argc, char* argv[]){
   // check if source file is provided
@@ -28,16 +29,19 @@ int main(int argc, char* argv[]){
   YANKI::Lexer lexer(src.str());
   std::vector<std::pair<YANKI::Token, std::string>>  tokens = lexer.tokenize();
 
-  // intialize a parser
-  YANKI::Parser parser(tokens);
-  parser.parse();
-
   // debug
-  if(YANKI::isDebug())
+  if(YANKI::isDebug()){
     for(auto token: tokens){
         std::cout << token.first << ": " << token.second << std::endl;
     }
+  } 
 
+  // intialize a parser
+  YANKI::Parser parser(tokens);
+  YANKI::ASTree* tree = parser.parse();
 
+  YANKI::PrintVisitor* visitor = new YANKI::PrintVisitor(); 
+  if(tree->getRoot() != nullptr) tree->getRoot()->accept(visitor);
+  else std::cout << "Null" << std::endl;
   return 0;
 }

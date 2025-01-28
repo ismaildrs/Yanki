@@ -1,26 +1,14 @@
 #pragma once
-#include "Visitor/Visitable.hpp"
+#include "visitor/Visitable.hpp"
 
-namespace YANKI{
-  class FloatFactor : public Visitable
-  {
+namespace YANKI {
+  class FloatFactor : public Visitable {
   private:
-    float value;
+      float value;
 
   public:
-    void accept(Visitor* v) override
-    {
-      v->visitFloatFactor(this);
-    }
-
-    float getValue() const
-    {
-      return value;
-    }
-
-    void setValue(float val)
-    {
-      value = val;
-    }
+      void accept(Visitor* v) override;
+      float getValue() const;
+      void setValue(float val);
   };
 }

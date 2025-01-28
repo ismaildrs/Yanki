@@ -1,7 +1,7 @@
 #pragma once
 #include <iostream>
 #include <stdexcept>
-#include "Visitor/Visitable.hpp"
+#include "visitor/Visitable.hpp"
 
 
 namespace YANKI

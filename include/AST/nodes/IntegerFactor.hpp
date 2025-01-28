@@ -1,26 +1,15 @@
 #pragma once
-#include "Visitor/Visitable.hpp"
+#include "visitor/Visitable.hpp"
 
-namespace YANKI{
-  class IntegerFactor : public Visitable
-  {
+namespace YANKI {
+  class IntegerFactor : public Visitable {
   private:
-    int value;
+      int value;
 
   public:
-    void accept(Visitor* v) override
-    {
-      v->visitIntegerFactor(this);
-    }
-
-    int getValue() const
-    {
-      return value;
-    }
-
-    void setValue(int val)
-    {
-      value = val;
-    }
+      IntegerFactor(int val){value=val;};
+      void accept(Visitor* v) override;
+      int getValue() const;
+      void setValue(int val);
   };
 }

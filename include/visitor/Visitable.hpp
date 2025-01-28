@@ -1,6 +1,6 @@
 #pragma once
 #include <iostream>
-#include "Visitor.hpp"
+#include <visitor/Visitor.hpp>
 
 namespace YANKI{
   class Visitable

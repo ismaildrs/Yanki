@@ -1,5 +1,5 @@
 #pragma once
-#include "Visitor/Visitable.hpp"
+#include "visitor/Visitable.hpp"
 
 namespace YANKI{
 

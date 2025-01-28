@@ -1,21 +1,15 @@
-#include "Visitor/Visitable.hpp"
+#pragma once
+#include "visitor/Visitable.hpp"
 
-namespace YANKI{
+namespace YANKI {
+
   class ExitStatement : public Visitable {
   private:
       int exitCode;
 
   public:
-      void accept(Visitor* v) override {
-          v->visitExitStatement(this);
-      }
-
-      int getExitCode() const {
-          return exitCode;
-      }
-
-      void setExitCode(int code) {
-          exitCode = code;
-      }
+      void accept(Visitor* v) override;
+      int getExitCode() const;
+      void setExitCode(int code);
   };
 }

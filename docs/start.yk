@@ -1,4 +1,4 @@
-li: 10+9; // Variable 
-i: (10*j)+40-10; // Variable
-show: i; // print statement
-exit: 1; // exit statement
+show: 10+9;
+li: (10+50)*20;
+show: li;
+exit;

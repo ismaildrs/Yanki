@@ -16,7 +16,13 @@ namespace YANKI
     CLOSE_PAREN,// )
     SHOW,       // print to console
     IDENTIFIER,        // variables
-    CST,        // numbers
+    // DATA TYPES
+    // INTEGER,
+    // FLOAT,
+    // STRING,
+    // CHAR,
+    // ARRAY,
+    CST,        // numbers TODO: change CST with proper data types
     END_EXPR,   // end of expression: ;
     EXIT        // exit
   };
@@ -35,7 +41,7 @@ namespace YANKI
         : src(src), index(0)
     {
       if(isDebug()) std::cout << "Lexer Phase: -----------------" << std::endl;
-    }
+    } 
 
     std::optional<char> peek(int head = 1)
     {
@@ -68,9 +74,9 @@ namespace YANKI
             buff.push_back(consume().value());
           }
           std::string gen = std::string(buff.begin(), buff.end());
-          if (gen.compare("show"))
+          if (!gen.compare("show"))
             tokens.push_back({Token::SHOW, gen}); // Add token for variable
-          else if (gen.compare("exit"))
+          else if (!gen.compare("exit"))
             tokens.push_back({Token::EXIT, gen});
           else
             tokens.push_back({Token::IDENTIFIER, gen});

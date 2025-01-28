@@ -1,26 +1,15 @@
 #pragma once
-#include "Visitor/Visitable.hpp"
+#include "visitor/Visitable.hpp"
+#include <string>
 
-namespace YANKI{
-  class StringFactor : public Visitable
-  {
+namespace YANKI {
+  class StringFactor : public Visitable {
   private:
-     std::string value;
+      std::string value;
 
   public:
-    void accept(Visitor* v) override
-    {
-      v->visitStringFactor(this);
-    }
-
-    const std::string& getValue() const
-    {
-      return value;
-    }
-
-    void setValue(const std::string& val)
-    {
-      value = val;
-    }
+      void accept(Visitor* v) override;
+      const std::string& getValue() const;
+      void setValue(const std::string& val);
   };
 }
