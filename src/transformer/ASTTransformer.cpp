@@ -79,16 +79,16 @@ void ASTTransformer::visitOperation(Operation* operation) {
     llvm::Value* result = nullptr;
     switch (operation->getOp()) {
         case OpType::ADD:
-            result = builder.CreateFAdd(lhs, rhs, "addtmp");
+            result = builder.CreateAdd(lhs, rhs, "addtmp");
             break;
         case OpType::SUB:
-            result = builder.CreateFSub(lhs, rhs, "subtmp");
+            result = builder.CreateSub(lhs, rhs, "subtmp");
             break;
         case OpType::MUL:
-            result = builder.CreateFMul(lhs, rhs, "multmp");
+            result = builder.CreateMul(lhs, rhs, "multmp");
             break;
         case OpType::DIV:
-            result = builder.CreateFDiv(lhs, rhs, "divtmp");
+            result = builder.CreateUDiv(lhs, rhs, "divtmp");
             break;
         default:
             throw std::runtime_error("Unsupported operation");
@@ -97,24 +97,38 @@ void ASTTransformer::visitOperation(Operation* operation) {
 }
 
 void ASTTransformer::visitPrintStatement(PrintStatement* printStatement) {
-
-    llvm::BasicBlock* printBB = llvm::BasicBlock::Create(
-        context,
-        "print",
-        currentFunction,
-        builder.GetInsertBlock()->getNextNode()
-    );
-    builder.CreateBr(printBB);
-    builder.SetInsertPoint(printBB);
-
-    
+    // Visit the expression to compute its value
     printStatement->getExpression()->accept(this);
     llvm::Value* value = namedValues["lastValue"];
-    
+
+    // Get the printf function
+    llvm::FunctionCallee printfFunc = module.getOrInsertFunction(
+        "printf",
+        llvm::FunctionType::get(
+            llvm::IntegerType::getInt32Ty(context),
+            llvm::PointerType::get(llvm::Type::getInt8Ty(context), 0),
+            true // printf is a variadic function
+        )
+    );
+
+    // Create the format string based on the type of the value
+    llvm::Value* formatStr = nullptr;
     if (value->getType()->isFloatingPointTy()) {
-        llvm::Value* formatStr = builder.CreateGlobalStringPtr("%f\n", "fmt");
-        std::vector<llvm::Value*> args{ formatStr, value };
+        formatStr = builder.CreateGlobalStringPtr("%f\n", "floatFormat");
+    } else if (value->getType()->isIntegerTy()) {
+        formatStr = builder.CreateGlobalStringPtr("%d\n", "intFormat");
+    } else {
+        // Handle other types or throw an error
+        throw std::runtime_error("Unsupported type for print statement");
     }
+
+    // Prepare the arguments for printf
+    std::vector<llvm::Value*> args;
+    args.push_back(formatStr); // First argument: format string
+    args.push_back(value);     // Second argument: value to print
+
+    // Emit the call to printf
+    builder.CreateCall(printfFunc, args, "printfCall");
 }
 
 void ASTTransformer::visitExitStatement(ExitStatement* exitStatement) {

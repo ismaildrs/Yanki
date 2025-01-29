@@ -1,3 +1,4 @@
+#include "Executor/CodeExecutor.hpp"
 #include "parser/Parser.hpp"
 #include "AST/AST.hpp"
 #include <Constants.hpp>
@@ -59,6 +60,14 @@ int main(int argc, char* argv[]){
        }
     }
   }
+
+  YANKI::CodeExecutor* executor = new YANKI::CodeExecutor(transformer->getModule(), transformer->getContext());
+
+  if(executor->initializeExecutionEngine()){
+    executor->generateObjectFile("../docs/start.o");
+  }
+
+
 
   return 0;
 }

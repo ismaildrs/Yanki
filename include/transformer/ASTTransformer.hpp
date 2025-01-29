@@ -36,6 +36,7 @@ namespace YANKI{
   public:
     ASTTransformer() : builder(context), module("ASTModule", context) {}
     llvm::Module& getModule() { return module; }
+    llvm::LLVMContext& getContext() { return context; }
     void visitProgram(Program* program) override;
     void visitIdentifier(Identifier* identifier) override;
     void visitFloatFactor(FloatFactor* integerFactor) override;
