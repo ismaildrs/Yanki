@@ -6,6 +6,7 @@
 #include <fstream>
 #include <sstream>
 #include<Lexer.hpp>
+#include <filesystem>
 #include "visitor/PrintVisitor.hpp"
 #include "transformer/ASTTransformer.hpp"
 
@@ -64,7 +65,7 @@ int main(int argc, char* argv[]){
   YANKI::CodeExecutor* executor = new YANKI::CodeExecutor(transformer->getModule(), transformer->getContext());
 
   if(executor->initializeExecutionEngine()){
-    executor->generateObjectFile("../docs/start.o");
+    executor->generateObjectFile(std::filesystem::path(argv[argc-1]).stem().concat(".o"));
   }
 
 
