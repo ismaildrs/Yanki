@@ -109,7 +109,7 @@ Yanki/
    ```bash
    ./yanki [input_file]
    ```
-   You will get an object file called `start.o`. Use the following command to convert it into an executable:
+   You will get an object file. Use the following command to convert it into an executable:
    ```bash
    gcc -o [output_file] [input_file].o # Replace with your desired file name
    ```
