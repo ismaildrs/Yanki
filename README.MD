@@ -90,7 +90,7 @@ Yanki/
 1. Clone the repository:
    ```bash
    git clone https://github.com/ismaildrs/Yanki.git
-   cd YANKI
+   cd Yanki
    ```
 
 2. Configure the project with CMake:
