@@ -1,3 +1,4 @@
+#include "Executor/CodeExecutor.hpp"
 #include "parser/Parser.hpp"
 #include "AST/AST.hpp"
 #include <Constants.hpp>
@@ -5,16 +6,18 @@
 #include <fstream>
 #include <sstream>
 #include<Lexer.hpp>
+#include <filesystem>
 #include "visitor/PrintVisitor.hpp"
+#include "transformer/ASTTransformer.hpp"
 
 int main(int argc, char* argv[]){
   // check if source file is provided
-  if(argc != 2){
+  if(argc < 2){
     std::cout << "Usage: yanki [source]" << "\n";
     exit(1);
   }
 
-  std::ifstream srcFile(argv[1]);
+  std::ifstream srcFile(argv[argc-1]);
 
   // check if source file exists
   if(!srcFile.is_open()){
@@ -29,19 +32,43 @@ int main(int argc, char* argv[]){
   YANKI::Lexer lexer(src.str());
   std::vector<std::pair<YANKI::Token, std::string>>  tokens = lexer.tokenize();
 
-  // debug
-  if(YANKI::isDebug()){
-    for(auto token: tokens){
-        std::cout << token.first << ": " << token.second << std::endl;
-    }
-  } 
-
   // intialize a parser
   YANKI::Parser parser(tokens);
   YANKI::ASTree* tree = parser.parse();
 
-  YANKI::PrintVisitor* visitor = new YANKI::PrintVisitor(); 
-  if(tree->getRoot() != nullptr) tree->getRoot()->accept(visitor);
-  else std::cout << "Null" << std::endl;
+  YANKI::ASTTransformer* transformer = new YANKI::ASTTransformer();
+  tree->getRoot()->accept(transformer);
+
+
+  std::vector<std::string> options;
+
+  // command flags
+  if(argc > 2){
+    for(int i=1; i<argc-1; i++){
+      options.push_back(argv[i]);
+    }
+
+    for(const auto& option: options){
+      if(option == "--ast-print"){
+        YANKI::PrintVisitor* visitor = new YANKI::PrintVisitor(); 
+        if(tree->getRoot() != nullptr) tree->getRoot()->accept(visitor);
+      } else if( option == "--llvm-ir-print"){
+        transformer->showIR();
+      } else if (option=="--tokens"){ // Show lexer output tokens
+        for(auto token: tokens){
+            std::cout << token.first << ": " << token.second << std::endl;
+        }
+       }
+    }
+  }
+
+  YANKI::CodeExecutor* executor = new YANKI::CodeExecutor(transformer->getModule(), transformer->getContext());
+
+  if(executor->initializeExecutionEngine()){
+    executor->generateObjectFile(std::filesystem::path(argv[argc-1]).stem().concat(".o"));
+  }
+
+
+
   return 0;
 }

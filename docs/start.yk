@@ -1,4 +1,19 @@
-show: 10+9;
-li: (10+50)*20;
-show: li;
-exit;
+  x: 42;
+  y: 3;
+  z: 10;
+
+  result1: x + y;
+  result2: z * 2;
+  result3: (x - z) / 2;
+
+  complex: (x + y) * (z - 5);
+  nested: ((x + 2) * (y - 1)) / (z + 3);
+
+  show: x;
+  show: result1;
+  show: complex;
+
+  final: x + y * z - 5;
+  show: final;
+
+  exit;

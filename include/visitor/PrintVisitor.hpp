@@ -13,7 +13,7 @@ namespace YANKI {
     std::string getOperationSymbol(OpType op);
   public:
       PrintVisitor(){
-        if(isDebug()) std::cout << "Print Visitor : -----------------" << std::endl;
+        if(isDebug()) std::cout << "Code AST : -----------------" << std::endl;
       };
       void visitProgram(Program* program) override;
       void visitIdentifier(Identifier* identifier) override;
